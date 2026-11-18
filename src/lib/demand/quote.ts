@@ -142,6 +142,10 @@ export async function quoteDemand(req: QuoteRequest): Promise<DemandQuote | NoQu
         ? { accountId: { notIn: [...req.excludeAccountIds] } }
         : {}),
       expiresAt: { gt: now },
+      // An agent's relisted leftover has a deposit behind it that only the
+      // agent endpoint settles (src/lib/agent/markers.ts). Null-safe: a plain
+      // NOT on a nullable column would drop every card with no marker.
+      OR: [{ failureReason: null }, { NOT: { failureReason: { startsWith: 'AGENT_' } } }],
     },
     orderBy: [{ expiresAt: 'asc' }],
     take: 200,

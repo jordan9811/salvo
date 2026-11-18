@@ -1,0 +1,4 @@
+src/lib/vault/lit/templates/** text eol=lf
+contracts/** text eol=lf
+src/lib/escrow/artifact.ts text eol=lf
+src/lib/escrow/artifact-v2.ts text eol=lf

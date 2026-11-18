@@ -1,0 +1,6 @@
+# pnpm 11 reads build approvals here.
+#   esbuild -> its native binary, used by vitest
+#   sharp   -> image binaries for next/image, not used by the tests
+allowBuilds:
+  esbuild: true
+  sharp: false

@@ -20,6 +20,7 @@ import { NextResponse } from 'next/server'
 import { ChipotleNotConfiguredError, ChipotleRequestError } from '@/lib/vault/lit/errors'
 import { ESCROW_RAIL_OFF_SENTENCE, escrowRailOn } from './rail'
 import { EscrowRpcError } from './runbook/rpc'
+import { isOurOrigin } from '../origins'
 
 /** No escrow request body is anywhere near this. A manifest is at most 2 KB and an envelope well under 1 KB. */
 const MAX_BODY_CHARS = 16_384
@@ -100,13 +101,9 @@ export function fromOurOwnPage(req: Request): boolean {
   if (site !== null && site !== 'same-origin') return false
   const origin = req.headers.get('origin')
   if (origin === null) return true
-  try {
-    // The same default src/lib/env.ts gives APP_URL, so both rails agree on
-    // what "our own page" is. An empty or malformed value refuses everything.
-    return origin === new URL(process.env.APP_URL ?? 'http://localhost:3000').origin
-  } catch {
-    return false
-  }
+  // APP_URL's origin or another address Salvo serves on (src/lib/origins.ts),
+  // the same rule the card routes use.
+  return isOurOrigin(origin)
 }
 
 const normKey = (k: string): string => k.toLowerCase().replace(/[_-]/g, '')

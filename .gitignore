@@ -1,2 +1,8 @@
 node_modules
 .env*
+.next
+coverage
+*.tsbuildinfo
+# The root build output only. Unanchored, `out/` would also hide contracts/out/,
+# where the compiled escrow artifacts are committed.
+/out/
