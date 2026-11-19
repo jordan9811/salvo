@@ -145,10 +145,12 @@ describe('a report on the card on screen', () => {
 
   it('more owed: the plan, with the kept hold said', () => {
     const kept = { cents: 1_890, until: 'next_shopper' as const }
-    expect(phaseAfterReport({ owed: tillOwedPlan(), owedCents: 5_213, receipt, kept, note: null }, purchase, [purchase], 'declined')).toEqual({
+    // One plan, used on both sides: each call stamps its own expiry, and two calls can land a millisecond apart.
+    const owed = tillOwedPlan()
+    expect(phaseAfterReport({ owed, owedCents: 5_213, receipt, kept, note: null }, purchase, [purchase], 'declined')).toEqual({
       kind: 'owed',
       purchase,
-      owed: tillOwedPlan(),
+      owed,
       kept,
       why: 'failed',
       line: null,

@@ -94,12 +94,31 @@ export function envelopeSha256(e: LitEnvelope): string {
   return sha256Hex(canonicalJson({ ct: e.ct, eph: e.eph, iv: e.iv, tag: e.tag }))
 }
 
-export function createReplyKey(): {
+export interface ReplyKey {
   publicKey: string
   open(replyB64: string, payloadText: string, encPub: string): Buffer
-} {
+}
+
+export function createReplyKey(): ReplyKey {
   const ecdh = createECDH('secp256k1')
   ecdh.generateKeys()
+  return replyKeyOf(ecdh)
+}
+
+/**
+ * The reply key whose secret is these 32 bytes, for a holder that must find
+ * the same key again after a restart: the order runner derives one per card
+ * from its own secret (src/lib/agent/orders/runner.ts), so a purchase it made
+ * before a crash can still be opened. Throws on bytes that are not a key.
+ */
+export function replyKeyFromSecret(secret: Uint8Array): ReplyKey {
+  if (secret.length !== 32) throw new RangeError('a reply key secret is 32 bytes')
+  const ecdh = createECDH('secp256k1')
+  ecdh.setPrivateKey(Buffer.from(secret))
+  return replyKeyOf(ecdh)
+}
+
+function replyKeyOf(ecdh: ReturnType<typeof createECDH>): ReplyKey {
   const pub = ecdh.getPublicKey(null, 'compressed')
 
   return {

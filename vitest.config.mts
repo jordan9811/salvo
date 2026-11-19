@@ -3,19 +3,14 @@ import { defineConfig } from 'vitest/config'
 
 /**
  * `pnpm test` runs every test here that needs no database and no network:
- * the escrow contracts on an in-process EVM, sealing and hashing, the routing
- * rules, the till and the seller flow.
+ * the order escrow and the card escrows on an in-process EVM, sealing and
+ * hashing, the routing rules, the till and the seller flow.
  *
  * The files below are in the repo to read. They run in the private codebase,
  * because they need its Postgres database, modules that are not published, or
  * the whole codebase to walk.
  */
 const PRIVATE_ONLY = [
-  // The agent endpoint: quote, MPP payment, refunds and the sweep.
-  'tests/agent-checkout.test.ts',
-  'tests/agent-partial.test.ts',
-  'tests/agent-review-round2.test.ts',
-  'tests/agent-review-round4.test.ts',
   // Checks that walk the whole private codebase (every page, route and script).
   'tests/escrow-browser-bundle.test.ts',
   'tests/escrow-no-stripe.test.ts',
