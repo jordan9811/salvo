@@ -209,6 +209,40 @@ get each card sealed to its own key, with no runner at all
 (`src/lib/agent/escrow-agent.ts`). Salvo never sees the card or holds the
 money.
 
+## The rebuilt escrow, on testnets since 2026-11-20
+
+The order escrow was rebuilt to one rule: the escrow holds the agent's money
+until there is a signed result. Nobody buys a card first. A card opens to the
+checkout only because a funded order reserved its listing, sellers are paid
+out of the order after the store's hold, and a failed checkout refunds the
+agent and leaves the cards for sale. It runs beside the older path described
+above, at the simulated test store only, with test money.
+
+| Contract | Network | Address |
+|---|---|---|
+| Listings | Tempo Moderato | `0xbd622504940adcdaa9b19ff26f641a2c35f1f511` |
+| Order escrow | Tempo Moderato | `0x4a6a5a64f21aadaece39a96ada0d70125b52dc20` |
+| Signer group | Tempo Moderato | `0x8d1c791c2f49c90a7425c6c07cca812dfec394fd` |
+| Order escrow | Base Sepolia | `0xe6bf38bd68f4bce480c5b8e48a3560ee01f2d3f6` |
+
+Run live on 2026-11-20, each read back from the chain by the agent's own
+client:
+
+- A good order paid on Tempo, and one paid on Base.
+- The seller paid from the escrow after the two-hour hold.
+- A declined checkout: the agent refunded in full, and the same card used by
+  the next order.
+- A card the store found empty, and one it found short: the order refunded,
+  that seller not paid.
+- An order opened and never started: the agent took its money back itself
+  after the deadline, with the enclave switched off.
+
+What that does not show: a real store, real money, or more than a handful of
+orders. Listed cards are sealed to one key inside a TEE for now (see the
+roadmap item below), and on testnet one copy of each sealed card is kept, not
+the two the design calls for. The contracts and the checkout code for this
+path are not in this excerpt yet.
+
 ## Not working yet
 
 - **No real store checks out.** The checkout inside the runner is the
