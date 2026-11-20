@@ -228,6 +228,16 @@ money.
   is an open business problem.
 - **Not built:** stores as data, relisting the cards from a failed checkout,
   on-chain KMS, and any partner checkout.
+- **Roadmap: MPC for stored cards.** Today a listed card is sealed to one key
+  that lives inside a TEE (Lit, on Intel TDX), and a second TEE runs the
+  checkout. A TEE is the right tool for typing a card into a store's checkout,
+  where only the cards in flight are exposed. It is not where the key to every
+  stored card should stay. The plan is to split that key across independent
+  parties (MPC, for example any 3 of 5), so a card opens only when enough of
+  them each check the chain and each send one piece to the buyer's one-time
+  key, and no single TEE, operator or vendor can open stored cards. The
+  listing contract already lets a seller move cards to a new sealer with one
+  approval, without listing them again.
 - **The first stores are chosen, not captured.** A guided capture tool in the
   private repo has rows for seven stores, by the kind of checkout problem
   each has: Best Buy and Nike (card typed at checkout), Home Depot and Walmart
