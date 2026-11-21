@@ -130,7 +130,9 @@ are made inside it, its contracts take a result signed only by those keys,
 and a checkout's cards open only inside it.
 
 - App id: `0x57e1889572bf23e7198cd6814b62154981ef6036`
-- Compose hash: `0xb64557ce85f41d1694a29dd7e3d54d1c4a2434d8ce8f577cf57cc2b2e5676640`
+- Compose hash: `0x77576f59634f0fa27d9c391a46dce6b648934d3691db0424a34f87dd65f03e34`
+  (measured 2026-11-21; it changes with every new image, and the agent's
+  client pins the current one)
 - Gateway: `https://57e1889572bf23e7198cd6814b62154981ef6036-8080.dstack-pha1-prod5.phala.network`
 - What its quote measured on 2026-11-19 (OS values, key provider, TCB
   `UpToDate`): `deploy/enclave-inspect.json`
