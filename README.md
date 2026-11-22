@@ -130,7 +130,7 @@ are made inside it, its contracts take a result signed only by those keys,
 and a checkout's cards open only inside it.
 
 - App id: `0x57e1889572bf23e7198cd6814b62154981ef6036`
-- Compose hash: `0x8f4003eb936bb61a718b113907c6854713aeb26be04c0028a9548bd8a0b1de39`
+- Compose hash: `0x9d784fab6367505510be9efe516c231b23ef6f091744cc1709a2e34e82af4b7e`
   (measured 2026-11-22; it changes with every new image, and the agent's
   client pins the current one)
 - Gateway: `https://57e1889572bf23e7198cd6814b62154981ef6036-8080.dstack-pha1-prod5.phala.network`
@@ -238,6 +238,24 @@ client:
   that seller not paid.
 - An order opened and never started: the agent took its money back itself
   after the deadline, with the enclave switched off.
+
+Added on 2026-11-22, at the simulated test store only: orders the checkout
+runs inside the buyer's own signed-in store account. The agent hands the TEE
+the store session, sealed to a key from the TEE's checked identity and signed
+by a one-time key for that order. The TEE writes a mark on chain before each
+card it enters, so a restart cannot lose track of a card. Salvo's fee is
+taken only when the store confirms the order was placed. The buyer gets a
+signed record of what was done in the account, sealed so only the buyer can
+open it. Run live on both chains:
+
+- A one-card order on Tempo and on Base, and a two-card order on Tempo, each
+  settled 34 to 49 seconds after payment.
+- A wrong account: refunded in full before any card was reserved.
+- An order paid and never handed over: refunded by the TEE at its cutoff.
+
+The signer group allows 20 card reservations in any 24 hours on testnet, as a
+bound on what a stolen key could open. When it is full a quote says so and
+nothing is charged.
 
 What that does not show: a real store, real money, or more than a handful of
 orders. Listed cards are sealed to one key inside a TEE for now (see the
