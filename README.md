@@ -130,7 +130,7 @@ are made inside it, its contracts take a result signed only by those keys,
 and a checkout's cards open only inside it.
 
 - App id: `0x57e1889572bf23e7198cd6814b62154981ef6036`
-- Compose hash: `0x9be94121f2e0296082fac3673c4dc132129ff02038f044ec3287db71739fda96`
+- Compose hash: `0x94845f48deebb0c5789d581b7fa04eac2a71639548667802d1111a691e7ca6fc`
   (measured 2026-11-23; it changes with every new image, and the agent's
   client pins the current one)
 - Gateway: `https://57e1889572bf23e7198cd6814b62154981ef6036-8080.dstack-pha1-prod5.phala.network`
