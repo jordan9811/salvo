@@ -130,8 +130,8 @@ are made inside it, its contracts take a result signed only by those keys,
 and a checkout's cards open only inside it.
 
 - App id: `0x57e1889572bf23e7198cd6814b62154981ef6036`
-- Compose hash: `0x5d9c0cbbacf8971093a4ad54ecaaab50c3be63ff62f0d2e2c3adca573d0b7471`
-  (measured 2026-11-23; it changes with every new image, and the agent's
+- Compose hash: `0xb36a9eeab1f24982c57ed51adff7405e1cb4f78e64d1ac17e50363ef4a761b17`
+  (measured 2026-11-24; it changes with every new image, and the agent's
   client pins the current one)
 - Gateway: `https://57e1889572bf23e7198cd6814b62154981ef6036-8080.dstack-pha1-prod5.phala.network`
 - What its quote measured on 2026-11-19 (OS values, key provider, TCB
@@ -252,6 +252,14 @@ open it. Run live on both chains:
   settled 34 to 49 seconds after payment.
 - A wrong account: refunded in full before any card was reserved.
 - An order paid and never handed over: refunded by the TEE at its cutoff.
+
+Added on 2026-11-24, at the test store only: the buyer can sign in to the store
+account themselves, in a browser inside the TEE, instead of the agent handing
+over a saved session. The buyer sees that browser and types through an
+encrypted view that Salvo's own servers cannot read; the view is closed before
+any seller's card is entered, and the TEE signs out of the account when the
+order ends. Run live on Tempo: one order confirmed; a wrong account and a
+dropped connection each refunded in full.
 
 The signer group allows 20 card reservations in any 24 hours on testnet, as a
 bound on what a stolen key could open. When it is full a quote says so and
